@@ -671,8 +671,9 @@
       </p>
       <p class="hero-bio">
         Jonathan Cox graduated from Baylor University in 2023 with a Bachelor of arts
-        in sociology. He has spent the last few years working in international education
-        with an interest in improving social mobility and education equity. This project
+        in sociology. He has since worked in international education, including advising
+        students across five continents and teaching in low-income schools in Spain, with
+        a focus on improving social mobility and education equity. This project
         uses publicly available Census data to surface patterns in who attends college 
         across all 254 Texas counties.
       </p>
@@ -716,8 +717,8 @@
         Across 221 Texas counties with reliable population estimates, income
         and college enrollment move in the same direction. But income explains
         only a small fraction of why enrollment rates vary so dramatically across
-        the state. The stronger predictor appears to be something else entirely:
-        whether a county has a college nearby.
+        the state. This suggests that other unmeasured factors, which may include
+        proximity to institutions, local labor markets, or community context, play a larger role.
       </p>
 
       <div class="findings-grid">
@@ -727,15 +728,15 @@
         </div>
         <div class="finding-card">
           <div class="stat">5.1 pts</div>
-          <p>Percentage-point gap in average enrollment between the highest and lowest income quartiles (29% vs. 24%). Real, but smaller than most would expect.</p>
+          <p>Percentage-point gap in average enrollment between the highest and lowest income quartiles (29% vs. 24%). Notable, but smaller than some might expect.</p>
         </div>
         <div class="finding-card">
           <div class="stat">77%</div>
-          <p>Enrollment rate in Brazos County, home to Texas A&amp;M, the highest in the state. Driven by institutional presence, not household wealth.</p>
+          <p>Enrollment rate in Brazos County, home to Texas A&amp;M, the highest in the state. Likely influenced by the presence of Texas A&amp;M, though this analysis did not measure institutional proximity directly.</p>
         </div>
         <div class="finding-card">
           <div class="stat">3.8%</div>
-          <p>Enrollment rate in Mills County, a middle-income county more than 100 miles from the nearest university. Geography, not income, explains this gap.</p>
+          <p>Enrollment rate in Mills County, a middle-income county with very low enrollment, suggesting income alone does not predict access.</p>
         </div>
       </div>
     </div>
@@ -748,7 +749,7 @@
     <div class="wrap--wide">
       <div class="wrap" style="padding:0">
         <p class="section-label">Analysis</p>
-        <h2>Income and enrollment: a weak but real relationship</h2>
+        <h2>Income and enrollment: a weak but notable relationship</h2>
         <div class="analysis-intro">
           <p>
             The scatter plot below places every Texas county as a single point.
@@ -761,14 +762,14 @@
             The most striking outliers are university host counties. Brazos
             (Texas A&amp;M), Erath (Tarleton State), and Nacogdoches (Stephen F.
             Austin) enroll far more young people than their income levels predict.
-            At the other extreme, several rural counties in West Texas and the
-            Panhandle sit at the bottom regardless of income.
+            At the other extreme, several rural counties sit at the bottom regardless of income.
           </p>
           <div class="takeaway">
             <p>
               Income explains only 4% of the variation in enrollment rates.
-              University presence appears to be a far stronger predictor of
-              whether a county sends its young people to college.
+              The remaining 96% points to other factors, potentially including
+              proximity to colleges, local economies, and community context,
+              that future research could investigate.
             </p>
           </div>
         </div>
@@ -833,10 +834,9 @@
         <div class="analysis-intro">
           <p>
             The fifteen counties with the lowest enrollment rates are
-            concentrated in West Texas, the Panhandle, and the Rio Grande
-            Valley, regions with limited higher education infrastructure and
-            significant distances to the nearest campus. Most are low-income,
-            consistent with the correlation.
+            predominantly rural and low-income, consistent with the correlation.
+            Why their enrollment rates are so far below the state average is
+            not fully explained by this analysis.
           </p>
           <div class="takeaway">
             <p>
@@ -878,8 +878,8 @@
           <p>
             The shape matters for policy. Interventions designed around the
             average county would miss the significant cluster of counties below
-            15%, where access barriers are likely structural and require more
-            targeted responses.
+            15%, where access barriers may be structural and could warrant
+            more targeted investigation.
           </p>
         </div>
       </div>
@@ -959,6 +959,20 @@
           </div>
         </li>
       </ol>
+
+      <div class="tools-row" style="margin-top:2.5rem; padding-top:1.5rem; border-top:1px solid var(--border);">
+        <p class="section-label" style="margin-bottom:0.75rem;">Data Limitations</p>
+        <p style="font-family:'Source Sans 3',sans-serif; font-size:0.9rem; line-height:1.65; color:var(--text-mid); margin-bottom:0;">
+          The American Community Survey counts individuals where they currently
+          reside, not necessarily where they grew up. This means enrollment rates
+          may be affected by students moving between counties for college,
+          particularly in counties with large universities. However, many Texas
+          students, especially those attending community colleges, live at home
+          and are counted locally. These rates should be understood as
+          approximations of local college participation rather than exact measures
+          of a county's college-going behavior.
+        </p>
+      </div>
 
       <div class="tools-row">
         <p class="tools-label">Tools &amp; Packages</p>
