@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p \"/Users/jonathanpro/Documents/DATA PROJECTS/Who Gets Access/data\" \"/Users/jonathanpro/Documents/DATA PROJECTS/Who Gets Access/output\")",
+      "Bash(mv \"/Users/jonathanpro/Documents/DATA PROJECTS/Who Gets Access/ACSST5Y2024.S1901-2026-03-23T082509.csv\" \"/Users/jonathanpro/Documents/DATA PROJECTS/Who Gets Access/data/\")",
+      "Bash(mv \"/Users/jonathanpro/Documents/DATA PROJECTS/Who Gets Access/ACSST5Y2024.S1401-2026-03-23T082616.csv\" \"/Users/jonathanpro/Documents/DATA PROJECTS/Who Gets Access/data/\")",
+      "Bash(Rscript -e 'library\\(dplyr\\); head\\(filter\\(tidycensus::fips_codes, state==\"\"TX\"\"\\), 3\\)')",
+      "Bash(Rscript -e 'cat\\(readLines\\(system.file\\(\"\"data/fips_codes.rda\"\", package=\"\"tidycensus\"\"\\), warn=FALSE\\)\\)')",
+      "Bash(Rscript 01_clean_data.R)"
+    ]
+  }
+}
