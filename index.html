@@ -3,621 +3,1003 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Who Gets Access? — Jonathan Cox</title>
+  <title>Who Gets Access? | Jonathan Cox</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* =========================================================
-       RESET & BASE
-    ========================================================= */
+    /* ==========================================================
+       TOKENS & RESET
+    ========================================================== */
+    :root {
+      --navy:         #1a2e4a;
+      --navy-mid:     #24406a;
+      --blue:         #1d5f8a;
+      --blue-light:   #4a86b4;
+      --blue-pale:    #eaf2f8;
+      --cream:        #f7f5f1;
+      --cream-dark:   #ede9e2;
+      --border:       #dddad4;
+      --text:         #1e1e1e;
+      --text-mid:     #444444;
+      --text-light:   #6b6b6b;
+      --white:        #ffffff;
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html { font-size: 18px; scroll-behavior: smooth; }
+    html {
+      font-size: 17px;
+      scroll-behavior: smooth;
+      scroll-padding-top: 68px; /* offset for sticky nav */
+    }
 
     body {
       font-family: 'Lora', Georgia, serif;
       font-size: 1rem;
-      line-height: 1.75;
-      color: #1a1a1a;
-      background: #ffffff;
+      line-height: 1.8;
+      color: var(--text);
+      background: var(--white);
     }
 
-    /* =========================================================
-       LAYOUT
-    ========================================================= */
-    .container {
-      max-width: 720px;
+    img { max-width: 100%; height: auto; display: block; }
+    a   { color: var(--blue); }
+
+    /* ==========================================================
+       LAYOUT HELPERS
+    ========================================================== */
+    .wrap       { max-width: 740px;  margin: 0 auto; padding: 0 1.75rem; }
+    .wrap--wide { max-width: 980px;  margin: 0 auto; padding: 0 1.75rem; }
+
+    /* ==========================================================
+       STICKY NAVIGATION
+    ========================================================== */
+    #site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 980px;
       margin: 0 auto;
-      padding: 0 2rem;
-    }
-
-    .container--wide {
-      max-width: 920px;
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
-
-    /* =========================================================
-       HEADER / BYLINE
-    ========================================================= */
-    header {
-      background-color: #1a3a5c;
-      color: #ffffff;
-      padding: 4rem 0 3.5rem;
-    }
-
-    .author-name {
-      font-family: 'Source Sans 3', sans-serif;
-      font-weight: 300;
-      font-size: 0.9rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #a8c4de;
-      margin-bottom: 0.5rem;
-    }
-
-    header h1 {
-      font-family: 'Lora', Georgia, serif;
-      font-size: 2.4rem;
-      font-weight: 600;
-      line-height: 1.25;
-      color: #ffffff;
-      margin-bottom: 1.25rem;
-      max-width: 640px;
-    }
-
-    .research-question {
-      font-family: 'Lora', Georgia, serif;
-      font-style: italic;
-      font-size: 1.1rem;
-      color: #c8dced;
-      line-height: 1.6;
-      max-width: 600px;
-      margin-bottom: 2rem;
-      border-left: 3px solid #4a86c8;
-      padding-left: 1rem;
-    }
-
-    .author-bio {
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 300;
-      color: #a8c4de;
-      line-height: 1.6;
-      max-width: 560px;
-    }
-
-    .header-meta {
-      margin-top: 2rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid #2d5278;
+      padding: 0 1.75rem;
+      height: 60px;
       display: flex;
-      gap: 2rem;
-      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
     }
 
-    .header-meta a {
+    .nav-logo {
       font-family: 'Source Sans 3', sans-serif;
-      font-size: 0.85rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--navy);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+
+    .nav-logo span {
+      font-weight: 300;
+      color: var(--text-light);
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .nav-links a {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.82rem;
       font-weight: 600;
-      color: #a8c4de;
+      color: var(--text-mid);
       text-decoration: none;
       letter-spacing: 0.04em;
-      transition: color 0.15s;
+      text-transform: uppercase;
+      padding: 0.35rem 0.6rem;
+      border-radius: 2px;
+      transition: color 0.15s, background 0.15s;
     }
 
-    .header-meta a:hover { color: #ffffff; }
-
-    /* =========================================================
-       SECTION STRUCTURE
-    ========================================================= */
-    section {
-      padding: 3.5rem 0;
+    .nav-links a:hover {
+      color: var(--navy);
+      background: var(--cream);
     }
 
-    section + section {
-      border-top: 1px solid #e8e8e8;
+    /* Hamburger (mobile only) */
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.4rem;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--navy);
+      transition: all 0.2s;
     }
 
-    .section-label {
+    /* ==========================================================
+       HERO / HEADER
+    ========================================================== */
+    #about {
+      background: var(--navy);
+      padding: 5rem 0 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle top-right decorative rule */
+    #about::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 340px; height: 4px;
+      background: var(--blue-light);
+    }
+
+    .hero-eyebrow {
       font-family: 'Source Sans 3', sans-serif;
       font-size: 0.75rem;
       font-weight: 700;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: #1d6fa4;
-      margin-bottom: 0.75rem;
+      color: var(--blue-light);
+      margin-bottom: 1rem;
+    }
+
+    #about h1 {
+      font-family: 'Lora', Georgia, serif;
+      font-size: clamp(2rem, 4.5vw, 2.9rem);
+      font-weight: 600;
+      line-height: 1.2;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+      max-width: 600px;
+    }
+
+    .hero-question {
+      font-family: 'Lora', Georgia, serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      line-height: 1.65;
+      color: #9bbdd9;
+      max-width: 580px;
+      padding-left: 1.1rem;
+      border-left: 3px solid var(--blue-light);
+      margin-bottom: 2rem;
+    }
+
+    .hero-bio {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 300;
+      color: #7fa8c8;
+      line-height: 1.65;
+      max-width: 540px;
+    }
+
+    .hero-links {
+      margin-top: 2.5rem;
+      padding-top: 1.75rem;
+      border-top: 1px solid #2a4a6a;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .hero-links a {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #9bbdd9;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .hero-links a:hover { color: var(--white); }
+    .hero-links a::after { content: ' \2192'; }
+
+    /* ==========================================================
+       PROJECT METADATA STRIP
+    ========================================================== */
+    .meta-strip {
+      background: var(--cream);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .meta-strip-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 0 1.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+
+    .meta-item {
+      padding: 1rem 2.5rem 1rem 0;
+      border-right: 1px solid var(--border);
+      margin-right: 2.5rem;
+    }
+
+    .meta-item:last-child { border-right: none; }
+
+    .meta-label {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 0.15rem;
+    }
+
+    .meta-value {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    /* ==========================================================
+       SECTION SHELL
+    ========================================================== */
+    .section {
+      padding: 4.5rem 0;
+    }
+
+    .section--cream {
+      background: var(--cream);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Left-accent section label */
+    .section-label {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .section-label::before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 2px;
+      background: var(--blue);
+      flex-shrink: 0;
     }
 
     h2 {
       font-family: 'Lora', Georgia, serif;
-      font-size: 1.55rem;
+      font-size: 1.7rem;
       font-weight: 600;
       line-height: 1.3;
-      color: #1a1a1a;
+      color: var(--navy);
       margin-bottom: 1.25rem;
     }
 
-    h3 {
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 1rem;
-      font-weight: 700;
-      color: #1a3a5c;
-      margin-top: 2rem;
-      margin-bottom: 0.4rem;
-      letter-spacing: 0.01em;
+    p {
+      color: var(--text-mid);
+      margin-bottom: 1.1rem;
     }
-
-    p { margin-bottom: 1.1rem; }
     p:last-child { margin-bottom: 0; }
 
-    /* =========================================================
-       FINDINGS CALLOUTS
-    ========================================================= */
+    /* ==========================================================
+       FINDINGS STAT CARDS
+    ========================================================== */
     .findings-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1.25rem;
-      margin: 2rem 0;
-    }
-
-    @media (max-width: 600px) {
-      .findings-grid { grid-template-columns: 1fr; }
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin: 2.5rem 0;
     }
 
     .finding-card {
-      background: #f4f8fc;
-      border-top: 3px solid #1d6fa4;
-      padding: 1.25rem 1.4rem;
+      background: var(--white);
+      padding: 1.6rem 1.75rem;
+      position: relative;
+    }
+
+    .finding-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 3px;
+      background: var(--blue);
     }
 
     .finding-card .stat {
       font-family: 'Source Sans 3', sans-serif;
-      font-size: 2rem;
+      font-size: 2.25rem;
       font-weight: 700;
-      color: #1a3a5c;
-      line-height: 1.1;
-      margin-bottom: 0.35rem;
+      color: var(--navy);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.01em;
     }
 
     .finding-card p {
       font-family: 'Source Sans 3', sans-serif;
-      font-size: 0.88rem;
-      line-height: 1.5;
-      color: #444;
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: var(--text-mid);
       margin-bottom: 0;
     }
 
-    /* =========================================================
-       CHART BLOCKS
-    ========================================================= */
-    .chart-block {
-      margin: 2.5rem 0;
+    /* ==========================================================
+       ANALYSIS INTRO TEXT
+    ========================================================== */
+    .analysis-intro {
+      margin-bottom: 2.5rem;
     }
 
-    .chart-block img {
+    .analysis-intro p { font-size: 1rem; }
+
+    /* ==========================================================
+       FIGURE BLOCKS
+    ========================================================== */
+    .figure {
+      background: var(--white);
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 16px rgba(26, 46, 74, 0.07);
+    }
+
+    .figure img {
       width: 100%;
-      height: auto;
       display: block;
-      border: 1px solid #e8e8e8;
+      border-bottom: 1px solid var(--border);
     }
 
-    .chart-caption {
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 0.82rem;
-      color: #666;
-      line-height: 1.5;
-      margin-top: 0.6rem;
-      padding-left: 0.1rem;
-    }
-
-    /* =========================================================
-       METHODOLOGY STEPS
-    ========================================================= */
-    .method-steps {
-      counter-reset: steps;
-      list-style: none;
-      margin: 1.5rem 0;
-    }
-
-    .method-steps li {
-      counter-increment: steps;
+    .figure-caption {
+      padding: 0.9rem 1.25rem;
       display: flex;
-      gap: 1.1rem;
-      margin-bottom: 1.25rem;
-      align-items: flex-start;
+      gap: 0.75rem;
+      align-items: baseline;
     }
 
-    .method-steps li::before {
-      content: counter(steps);
+    .figure-num {
       font-family: 'Source Sans 3', sans-serif;
-      font-size: 0.8rem;
+      font-size: 0.72rem;
       font-weight: 700;
-      color: #fff;
-      background: #1d6fa4;
-      min-width: 1.6rem;
-      height: 1.6rem;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 0.15rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--blue);
+      white-space: nowrap;
       flex-shrink: 0;
     }
 
-    .method-steps li p {
+    .figure-caption p {
       font-family: 'Source Sans 3', sans-serif;
-      font-size: 0.95rem;
-      line-height: 1.6;
-      color: #333;
-      margin-bottom: 0;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: var(--text-light);
+      margin: 0;
     }
 
-    .method-steps li strong {
-      color: #1a3a5c;
+    /* ==========================================================
+       PULL QUOTE / KEY TAKEAWAY
+    ========================================================== */
+    .takeaway {
+      border-left: 4px solid var(--blue-light);
+      padding: 0.9rem 1.25rem;
+      background: var(--blue-pale);
+      margin: 2rem 0;
     }
 
-    /* =========================================================
-       TOOLS TAG LIST
-    ========================================================= */
-    .tool-tags {
+    .takeaway p {
+      font-family: 'Lora', Georgia, serif;
+      font-style: italic;
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--navy);
+      margin: 0;
+    }
+
+    /* ==========================================================
+       METHODOLOGY STEPS
+    ========================================================== */
+    .method-steps {
+      list-style: none;
+      margin: 2rem 0;
+    }
+
+    .method-steps li {
       display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 1rem;
+      gap: 1.25rem;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
     }
 
-    .tool-tags span {
+    .method-steps li:first-child { border-top: 1px solid var(--border); }
+
+    .step-num {
       font-family: 'Source Sans 3', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 600;
-      background: #eef4fa;
-      color: #1a3a5c;
-      padding: 0.25rem 0.75rem;
-      border-radius: 2px;
-      letter-spacing: 0.02em;
-    }
-
-    /* =========================================================
-       FOOTER / CONTACT
-    ========================================================= */
-    footer {
-      background: #f5f5f5;
-      border-top: 1px solid #e0e0e0;
-      padding: 3rem 0;
-    }
-
-    .contact-grid {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--blue);
+      background: var(--blue-pale);
+      border: 1px solid #c2ddef;
+      min-width: 2rem;
+      height: 2rem;
       display: flex;
-      gap: 3rem;
-      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
     }
 
-    .contact-item .contact-label {
+    .step-body strong {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--navy);
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .step-body p {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: var(--text-mid);
+      margin: 0;
+    }
+
+    /* ==========================================================
+       TOOL TAGS
+    ========================================================== */
+    .tools-row {
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .tools-label {
       font-family: 'Source Sans 3', sans-serif;
       font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: #999;
-      margin-bottom: 0.3rem;
+      color: var(--text-light);
+      margin-bottom: 0.75rem;
+    }
+
+    .tool-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .tool-tags span {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: var(--white);
+      color: var(--navy);
+      border: 1px solid var(--border);
+      padding: 0.2rem 0.65rem;
+      letter-spacing: 0.02em;
+    }
+
+    /* ==========================================================
+       FOOTER / CONTACT
+    ========================================================== */
+    #contact {
+      background: var(--navy);
+      padding: 4rem 0 3rem;
+    }
+
+    .contact-heading {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--blue-light);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .contact-heading::before {
+      content: '';
+      display: inline-block;
+      width: 24px; height: 2px;
+      background: var(--blue-light);
+    }
+
+    .contact-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .contact-item .clabel {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #5a85a8;
+      margin-bottom: 0.35rem;
     }
 
     .contact-item a {
       font-family: 'Source Sans 3', sans-serif;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 600;
-      color: #1d6fa4;
+      color: #9bbdd9;
       text-decoration: none;
+      transition: color 0.15s;
     }
 
-    .contact-item a:hover { text-decoration: underline; }
+    .contact-item a:hover { color: var(--white); }
+
+    .footer-bottom {
+      padding-top: 2rem;
+      border-top: 1px solid #2a4a6a;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
 
     .footer-note {
       font-family: 'Source Sans 3', sans-serif;
-      font-size: 0.8rem;
-      color: #aaa;
-      margin-top: 2.5rem;
+      font-size: 0.78rem;
+      color: #4a7a9e;
+      line-height: 1.55;
+    }
+
+    .footer-credit {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.78rem;
+      color: #4a7a9e;
+    }
+
+    /* ==========================================================
+       RESPONSIVE
+    ========================================================== */
+    @media (max-width: 680px) {
+      html { scroll-padding-top: 56px; }
+
+      .nav-toggle { display: flex; }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 60px; left: 0; right: 0;
+        background: var(--white);
+        border-bottom: 1px solid var(--border);
+        flex-direction: column;
+        padding: 0.5rem 0;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      }
+
+      .nav-links.open { display: flex; }
+
+      .nav-links a {
+        padding: 0.65rem 1.75rem;
+        border-radius: 0;
+      }
+
+      #site-nav { position: sticky; }
+
+      #about { padding: 3.5rem 0 3rem; }
+      #about h1 { font-size: 1.9rem; }
+
+      .findings-grid { grid-template-columns: 1fr; }
+
+      .meta-strip-inner { gap: 0; }
+      .meta-item { padding: 0.75rem 1.5rem 0.75rem 0; margin-right: 1.5rem; }
+
+      .section { padding: 3rem 0; }
+
+      h2 { font-size: 1.45rem; }
+
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (max-width: 420px) {
+      .meta-strip-inner { flex-direction: column; }
+      .meta-item { border-right: none; border-bottom: 1px solid var(--border); margin-right: 0; }
+      .meta-item:last-child { border-bottom: none; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ======================================================
-       HEADER
-  ======================================================= -->
-  <header>
-    <div class="container">
-      <p class="author-name">Jonathan Cox &nbsp;/&nbsp; Data Analysis Portfolio</p>
+  <!-- ========================================================
+       STICKY NAVIGATION
+  ========================================================= -->
+  <nav id="site-nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="#about" class="nav-logo">Jonathan Cox <span>/ Research</span></a>
+      <button class="nav-toggle" aria-label="Open navigation" onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded')==='true'?'false':'true'); document.querySelector('.nav-links').classList.toggle('open');">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#findings">Findings</a></li>
+        <li><a href="#analysis">Analysis</a></li>
+        <li><a href="#methodology">Methodology</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ========================================================
+       HERO
+  ========================================================= -->
+  <header id="about">
+    <div class="wrap">
+      <p class="hero-eyebrow">Data Analysis &nbsp;&bull;&nbsp; Education Equity &nbsp;&bull;&nbsp; Texas</p>
       <h1>Who Gets Access?</h1>
-      <p class="research-question">
+      <p class="hero-question">
         Does household income predict whether young people in Texas go to college?
         And if income alone doesn't fully explain the gap, what else might?
       </p>
-      <p class="author-bio">
+      <p class="hero-bio">
         Jonathan Cox is a sociologist and data analyst focused on education equity
-        and social policy. This project uses publicly available Census data to
-        surface patterns in who attends college across Texas counties.
+        and social policy. This project uses publicly available Census data to surface
+        patterns in who attends college across all 254 Texas counties.
       </p>
-      <div class="header-meta">
-        <a href="https://github.com/jtcox-data/who-gets-access" target="_blank">
-          View code on GitHub &rarr;
-        </a>
-        <a href="https://data.census.gov/table/ACSST5Y2024.S1401" target="_blank">
-          Data: ACS S1401 &rarr;
-        </a>
-        <a href="https://data.census.gov/table/ACSST5Y2024.S1901" target="_blank">
-          Data: ACS S1901 &rarr;
-        </a>
+      <div class="hero-links">
+        <a href="https://data.census.gov/table/ACSST5Y2024.S1401" target="_blank">Data: ACS S1401</a>
+        <a href="https://data.census.gov/table/ACSST5Y2024.S1901" target="_blank">Data: ACS S1901</a>
       </div>
     </div>
   </header>
 
-  <!-- ======================================================
-       KEY FINDINGS — stat cards
-  ======================================================= -->
-  <section>
-    <div class="container">
+  <!-- Project metadata strip -->
+  <div class="meta-strip">
+    <div class="meta-strip-inner">
+      <div class="meta-item">
+        <p class="meta-label">Data Source</p>
+        <p class="meta-value">U.S. Census Bureau ACS</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Estimate Period</p>
+        <p class="meta-value">2019–2024 (5-Year)</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Geography</p>
+        <p class="meta-value">Texas Counties (n = 221)</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Method</p>
+        <p class="meta-value">Correlation &amp; Quartile Analysis</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       KEY FINDINGS
+  ========================================================= -->
+  <section class="section" id="findings">
+    <div class="wrap">
       <p class="section-label">Key Findings</p>
       <h2>What the data shows</h2>
       <p>
         Across 221 Texas counties with reliable population estimates, income
-        and college enrollment move in the same direction — but income explains
+        and college enrollment move in the same direction. But income explains
         only a small fraction of why enrollment rates vary so dramatically across
-        the state.
+        the state. The stronger predictor appears to be something else entirely:
+        whether a county has a college nearby.
       </p>
 
       <div class="findings-grid">
         <div class="finding-card">
           <div class="stat">r = 0.20</div>
-          <p>Pearson correlation between county median income and enrollment rate. Statistically significant (p = 0.003), but income explains just 4% of the variation.</p>
+          <p>Pearson correlation between county median income and enrollment rate. Statistically significant (p&nbsp;=&nbsp;0.003), but income explains just 4% of the variation across counties.</p>
         </div>
         <div class="finding-card">
           <div class="stat">5.1 pts</div>
-          <p>Percentage-point gap in average enrollment between the highest and lowest income quartiles (29% vs. 24%). Real, but smaller than many would expect.</p>
+          <p>Percentage-point gap in average enrollment between the highest and lowest income quartiles (29% vs. 24%). Real, but smaller than most would expect.</p>
         </div>
         <div class="finding-card">
           <div class="stat">77%</div>
-          <p>Enrollment rate in Brazos County (home to Texas A&amp;M), the highest in the state — driven by institutional presence, not household wealth.</p>
+          <p>Enrollment rate in Brazos County, home to Texas A&amp;M, the highest in the state. Driven by institutional presence, not household wealth.</p>
         </div>
         <div class="finding-card">
           <div class="stat">3.8%</div>
-          <p>Enrollment rate in Mills County, a middle-income county (Q3) over 100 miles from the nearest university — suggesting geography matters beyond income.</p>
+          <p>Enrollment rate in Mills County, a middle-income county more than 100 miles from the nearest university. Geography, not income, explains this gap.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ======================================================
-       CHART 1 — Scatter
-  ======================================================= -->
-  <section>
-    <div class="container--wide">
-      <div class="container" style="padding: 0;">
+  <!-- ========================================================
+       ANALYSIS: CHART 1
+  ========================================================= -->
+  <section class="section section--cream" id="analysis">
+    <div class="wrap--wide">
+      <div class="wrap" style="padding:0">
         <p class="section-label">Analysis</p>
         <h2>Income and enrollment: a weak but real relationship</h2>
-        <p>
-          The scatter plot below shows every Texas county as a single point.
-          The trend line confirms that higher-income counties tend to have
-          higher enrollment rates, but the relationship is loose. Counties
-          cluster far above and below the line, meaning many other factors
-          are shaping enrollment outcomes.
-        </p>
-        <p>
-          The most striking outliers are university host counties, labeled at
-          the top of the chart. Brazos (Texas A&amp;M), Erath (Tarleton State),
-          and Nacogdoches (Stephen F. Austin) all enroll far more young people
-          than their income levels would predict. At the other extreme, several
-          rural counties in deep West Texas and the Panhandle sit at the bottom
-          regardless of income.
-        </p>
+        <div class="analysis-intro">
+          <p>
+            The scatter plot below places every Texas county as a single point.
+            The trend line confirms that higher-income counties tend to have
+            higher enrollment rates, but the relationship is loose. Counties
+            cluster far above and below the line, meaning many other factors
+            are at work.
+          </p>
+          <p>
+            The most striking outliers are university host counties. Brazos
+            (Texas A&amp;M), Erath (Tarleton State), and Nacogdoches (Stephen F.
+            Austin) enroll far more young people than their income levels predict.
+            At the other extreme, several rural counties in West Texas and the
+            Panhandle sit at the bottom regardless of income.
+          </p>
+          <div class="takeaway">
+            <p>
+              Income explains only 4% of the variation in enrollment rates.
+              University presence appears to be a far stronger predictor of
+              whether a county sends its young people to college.
+            </p>
+          </div>
+        </div>
       </div>
-      <div class="chart-block" style="margin-top: 2rem;">
+      <figure class="figure">
         <img src="output/01_scatter_income_vs_enrollment.png"
-             alt="Scatter plot of median household income vs. college enrollment rate for Texas counties. Each point is a county, colored by income quartile. A trend line shows a weak positive relationship.">
-        <p class="chart-caption">
-          Figure 1. College enrollment rate (ages 18–24) vs. median household income for 221 Texas counties.
-          Points colored by income quartile. Labeled counties are the strongest residual outliers from the linear trend.
-        </p>
-      </div>
+             alt="Scatter plot of median household income vs. college enrollment rate for 221 Texas counties. Each point is colored by income quartile. A trend line shows a weak positive relationship. University counties appear as high outliers.">
+        <div class="figure-caption">
+          <span class="figure-num">Figure 1</span>
+          <p>College enrollment rate (ages 18–24) vs. median household income, 221 Texas counties.
+             Points colored by income quartile. Labeled counties are the strongest residual outliers
+             from the linear trend line.</p>
+        </div>
+      </figure>
     </div>
   </section>
 
-  <!-- ======================================================
-       CHART 2 — Quartile bar
-  ======================================================= -->
-  <section>
-    <div class="container">
-      <h2>The quartile picture: a gap at the top, noise in the middle</h2>
-      <p>
-        When counties are grouped into four equal income tiers, the highest
-        income quartile does enroll more students on average. But the Q2 and
-        Q3 gap is essentially flat, and the error bars tell the real story:
-        the spread within each quartile (up to 17 percentage points) is three
-        times larger than the gap between them.
-      </p>
-      <p>
-        This pattern suggests that policy interventions targeting income alone
-        would miss most of the counties with low enrollment. Within any income
-        group, some counties enroll at much higher rates than others — pointing
-        to factors like campus access, high school quality, and community norms
-        that operate independently of household wealth.
-      </p>
-    </div>
-    <div class="container--wide">
-      <div class="chart-block" style="margin-top: 1.5rem;">
+  <!-- ========================================================
+       ANALYSIS: CHART 2
+  ========================================================= -->
+  <section class="section">
+    <div class="wrap--wide">
+      <div class="wrap" style="padding:0">
+        <h2>The quartile picture: a gap at the top, noise in the middle</h2>
+        <div class="analysis-intro">
+          <p>
+            When counties are grouped into four equal income tiers, the highest
+            income quartile does enroll more students on average. But the Q2 and
+            Q3 averages are nearly identical, and the error bars reveal the core
+            challenge: the spread within each quartile is three times larger than
+            the gap between them.
+          </p>
+          <p>
+            This matters for policy. Interventions targeting income alone would
+            miss most low-enrollment counties. Within any income group, some
+            counties enroll at rates far above the norm, pointing to campus
+            access, high school quality, and community context as forces that
+            operate independently of household wealth.
+          </p>
+        </div>
+      </div>
+      <figure class="figure">
         <img src="output/02_bar_enrollment_by_quartile.png"
-             alt="Bar chart showing mean college enrollment rate by income quartile. Q4 (highest income) averages 29%, Q1 (lowest) averages 24%. Error bars show wide within-quartile variation.">
-        <p class="chart-caption">
-          Figure 2. Mean college enrollment rate by county income quartile.
-          Error bars show &plusmn;1 standard deviation across counties within each quartile.
-        </p>
-      </div>
+             alt="Bar chart showing mean college enrollment rate by county income quartile, with error bars. Q4 (highest income) averages 29%, Q1 averages 24%. Error bars show wide within-quartile variation of up to 17 percentage points.">
+        <div class="figure-caption">
+          <span class="figure-num">Figure 2</span>
+          <p>Mean college enrollment rate by county income quartile (54–56 counties each).
+             Error bars show &plusmn;1 standard deviation. Within-quartile variation
+             substantially exceeds the between-quartile gap.</p>
+        </div>
+      </figure>
     </div>
   </section>
 
-  <!-- ======================================================
-       CHART 3 — Bottom 15
-  ======================================================= -->
-  <section>
-    <div class="container">
-      <h2>Where the access gap is most severe</h2>
-      <p>
-        The fifteen counties with the lowest enrollment rates are concentrated
-        in West Texas, the Panhandle, and the Rio Grande Valley — regions with
-        limited higher education infrastructure and significant distances to
-        the nearest campus. Most of these counties are in the lowest income
-        quartile, consistent with the correlation. But three are not.
-      </p>
-      <p>
-        Mills, Lipscomb, and Karnes counties all sit in Q3, with median
-        incomes between $60K and $73K. Their appearance in the bottom fifteen
-        is difficult to explain through income alone and points toward
-        geographic isolation and institutional absence as independent barriers
-        to access.
-      </p>
-    </div>
-    <div class="container--wide">
-      <div class="chart-block" style="margin-top: 1.5rem;">
+  <!-- ========================================================
+       ANALYSIS: CHART 3
+  ========================================================= -->
+  <section class="section section--cream">
+    <div class="wrap--wide">
+      <div class="wrap" style="padding:0">
+        <h2>Where the access gap is most severe</h2>
+        <div class="analysis-intro">
+          <p>
+            The fifteen counties with the lowest enrollment rates are
+            concentrated in West Texas, the Panhandle, and the Rio Grande
+            Valley, regions with limited higher education infrastructure and
+            significant distances to the nearest campus. Most are low-income,
+            consistent with the correlation.
+          </p>
+          <div class="takeaway">
+            <p>
+              Mills, Lipscomb, and Karnes counties sit in Q3 (middle income)
+              yet rank in the bottom 15 statewide. Their income levels give no
+              warning of the access gap their young residents face.
+            </p>
+          </div>
+        </div>
+      </div>
+      <figure class="figure">
         <img src="output/03_bar_lowest_enrollment_counties.png"
-             alt="Horizontal bar chart ranking the 15 Texas counties with the lowest college enrollment rates. Bars are colored by income quartile. Most are Q1, but three Q3 counties appear.">
-        <p class="chart-caption">
-          Figure 3. The 15 Texas counties with the lowest college enrollment rates (ages 18–24),
-          colored by income quartile. Q3 counties in this list — Mills, Lipscomb, Karnes — are
-          notable because their income levels do not predict this level of enrollment gap.
-        </p>
-      </div>
+             alt="Horizontal bar chart of the 15 Texas counties with the lowest college enrollment rates, sorted from lowest to highest, colored by income quartile. Most are Q1, but three Q3 counties (Mills, Lipscomb, Karnes) appear unexpectedly.">
+        <div class="figure-caption">
+          <span class="figure-num">Figure 3</span>
+          <p>The 15 Texas counties with the lowest college enrollment rates, colored by income quartile.
+             Q3 counties (Mills, Lipscomb, Karnes) are notable outliers whose income levels do not
+             predict this degree of access gap.</p>
+        </div>
+      </figure>
     </div>
   </section>
 
-  <!-- ======================================================
-       CHART 4 — Histogram
-  ======================================================= -->
-  <section>
-    <div class="container">
-      <h2>A state divided: the full distribution</h2>
-      <p>
-        The histogram of enrollment rates across all 221 counties reveals a
-        right-skewed distribution: most counties cluster between 10% and 40%,
-        with a long tail of high-enrollment counties pulled upward by university
-        towns. The mean (26%) sits above the median (25%), a signature of
-        that skew.
-      </p>
-      <p>
-        The shape of this distribution matters for policy. Interventions
-        designed around the average county would miss the significant cluster
-        of counties below 15%, where barriers to access are likely structural
-        rather than marginal.
-      </p>
-    </div>
-    <div class="container--wide">
-      <div class="chart-block" style="margin-top: 1.5rem;">
+  <!-- ========================================================
+       ANALYSIS: CHART 4
+  ========================================================= -->
+  <section class="section">
+    <div class="wrap--wide">
+      <div class="wrap" style="padding:0">
+        <h2>A state divided: the full distribution</h2>
+        <div class="analysis-intro">
+          <p>
+            Most Texas counties enroll between 10% and 40% of their 18–24
+            year-olds in college. But the distribution is right-skewed, with a
+            long tail of high-enrollment counties pulled upward by university
+            towns. The mean (26%) sits above the median (25%), a signature of
+            that skew.
+          </p>
+          <p>
+            The shape matters for policy. Interventions designed around the
+            average county would miss the significant cluster of counties below
+            15%, where access barriers are likely structural and require more
+            targeted responses.
+          </p>
+        </div>
+      </div>
+      <figure class="figure">
         <img src="output/04_histogram_enrollment_distribution.png"
-             alt="Histogram showing the distribution of college enrollment rates across 221 Texas counties. The distribution is right-skewed with a mean of 26%.">
-        <p class="chart-caption">
-          Figure 4. Distribution of college enrollment rates across 221 Texas counties.
-          The right tail reflects university host counties; the dashed line marks the mean (26%).
-        </p>
-      </div>
+             alt="Histogram of college enrollment rates across 221 Texas counties in 5-point bins. The distribution is right-skewed. A dashed vertical line marks the mean at 26%.">
+        <div class="figure-caption">
+          <span class="figure-num">Figure 4</span>
+          <p>Distribution of college enrollment rates across 221 Texas counties (5-point bins).
+             The right tail reflects university host counties. The dashed line marks the mean (26%).</p>
+        </div>
+      </figure>
     </div>
   </section>
 
-  <!-- ======================================================
+  <!-- ========================================================
        METHODOLOGY
-  ======================================================= -->
-  <section>
-    <div class="container">
+  ========================================================= -->
+  <section class="section section--cream" id="methodology">
+    <div class="wrap">
       <p class="section-label">Methodology</p>
       <h2>How this analysis was done</h2>
 
       <ol class="method-steps">
         <li>
-          <p>
-            <strong>Data collection.</strong> Two tables were downloaded from
-            the U.S. Census Bureau's American Community Survey (ACS) 5-Year
-            Estimates for 2024, covering the period 2019–2024: Table S1401
-            (School Enrollment) and S1901 (Household Income), both for all
-            254 Texas counties.
-          </p>
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>Data Collection</strong>
+            <p>Two tables were downloaded from the U.S. Census Bureau's American
+            Community Survey (ACS) 5-Year Estimates, 2024 release, covering
+            2019–2024: Table S1401 (School Enrollment) and S1901 (Household
+            Income) for all 254 Texas counties.</p>
+          </div>
         </li>
         <li>
-          <p>
-            <strong>Data preparation.</strong> ACS table exports are structured
-            with counties as columns and demographic categories as rows — the
-            opposite of a standard analysis-ready format. The raw files were
-            reshaped, the two target variables were extracted (18–24 enrollment
-            counts and median household income), and the tables were joined by
-            county name.
-          </p>
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>Data Preparation</strong>
+            <p>ACS table exports are structured with counties as columns and
+            demographic categories as rows. The raw files were reshaped into a
+            standard tidy format, the two target variables were extracted
+            (18–24 enrollment counts and median household income), and the
+            tables were joined by county name.</p>
+          </div>
         </li>
         <li>
-          <p>
-            <strong>Data quality.</strong> Thirty-three counties with fewer than
-            200 residents aged 18–24 were excluded from statistical analysis;
-            ACS estimates for very small populations carry margins of error
-            larger than the estimates themselves. Fourteen counties where
-            enrollment appeared as zero (likely a Census suppression artifact
-            rather than a true count) were recoded as missing rather than zero.
-          </p>
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>Data Quality</strong>
+            <p>Thirty-three counties with fewer than 200 residents aged 18–24
+            were excluded from analysis; ACS estimates for very small populations
+            carry margins of error larger than the estimates themselves. Fourteen
+            counties where enrollment appeared as zero (likely Census suppression,
+            not a true count) were recoded as missing to avoid deflating the
+            correlation.</p>
+          </div>
         </li>
         <li>
-          <p>
-            <strong>Analysis.</strong> Descriptive statistics, income quartile
-            groupings, and a Pearson correlation were calculated across the
-            remaining 221 counties. The ten lowest-enrollment counties were
-            identified and their income levels examined.
-          </p>
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <strong>Analysis</strong>
+            <p>Descriptive statistics, income quartile groupings, and a Pearson
+            correlation were calculated across the remaining 221 counties. The
+            fifteen lowest-enrollment counties were identified and their income
+            levels examined to test whether income alone predicted the gap.</p>
+          </div>
         </li>
         <li>
-          <p>
-            <strong>Visualization.</strong> Four charts were produced in
-            ggplot2 to show the income–enrollment relationship, the quartile
-            comparison, the counties with the worst access gaps, and the full
-            distribution of enrollment rates statewide.
-          </p>
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <strong>Visualization</strong>
+            <p>Four charts were produced in ggplot2: a scatter plot of the
+            income–enrollment relationship with labeled outliers, a bar chart
+            comparing enrollment by income quartile, a ranked list of the
+            lowest-enrollment counties colored by income group, and a histogram
+            of the statewide enrollment distribution.</p>
+          </div>
         </li>
       </ol>
 
-      <div class="tool-tags">
-        <span>R</span>
-        <span>ggplot2</span>
-        <span>dplyr</span>
-        <span>tidyr</span>
-        <span>readr</span>
-        <span>ggrepel</span>
-        <span>scales</span>
-        <span>tidycensus</span>
-        <span>U.S. Census ACS</span>
+      <div class="tools-row">
+        <p class="tools-label">Tools &amp; Packages</p>
+        <div class="tool-tags">
+          <span>R</span>
+          <span>ggplot2</span>
+          <span>dplyr</span>
+          <span>tidyr</span>
+          <span>readr</span>
+          <span>ggrepel</span>
+          <span>scales</span>
+          <span>tidycensus</span>
+          <span>U.S. Census ACS</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ======================================================
-       FOOTER / CONTACT
-  ======================================================= -->
-  <footer>
-    <div class="container">
-      <p class="section-label">Contact</p>
+  <!-- ========================================================
+       CONTACT / FOOTER
+  ========================================================= -->
+  <footer id="contact">
+    <div class="wrap">
+      <p class="contact-heading">Get in touch</p>
       <div class="contact-grid">
         <div class="contact-item">
-          <p class="contact-label">Email</p>
+          <p class="clabel">Email</p>
           <a href="mailto:jncox@proton.me">jncox@proton.me</a>
         </div>
         <div class="contact-item">
-          <p class="contact-label">LinkedIn</p>
-          <a href="https://www.linkedin.com/in/jonathan-cox-975056202/" target="_blank">linkedin.com/in/jonathan-cox-975056202</a>
+          <p class="clabel">LinkedIn</p>
+          <a href="https://www.linkedin.com/in/jonathan-cox-975056202/" target="_blank">jonathan-cox-975056202</a>
         </div>
         <div class="contact-item">
-          <p class="contact-label">GitHub</p>
-          <a href="https://github.com/jtcox-data/who-gets-access" target="_blank">github.com/jtcox-data/who-gets-access</a>
         </div>
       </div>
-      <p class="footer-note">
-        Data: U.S. Census Bureau, American Community Survey 5-Year Estimates, 2024.
-        Analysis and visualization by Jonathan Cox.
-      </p>
+      <div class="footer-bottom">
+        <p class="footer-note">
+          Data: U.S. Census Bureau, American Community Survey 5-Year Estimates, 2024 (Tables S1401 &amp; S1901).<br>
+          Analysis excludes 33 Texas counties with fewer than 200 residents aged 18–24.
+        </p>
+        <p class="footer-credit">Jonathan Cox &nbsp;&bull;&nbsp; 2025</p>
+      </div>
     </div>
   </footer>
 
